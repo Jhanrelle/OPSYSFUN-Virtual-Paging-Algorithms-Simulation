@@ -2,24 +2,37 @@ import optimal
 import lru
 
 def display_results(algo_name, steps, faults, hits):
-    """Formats and prints the simulation results in a clean table."""
-    print(f"\n{'='*20} {algo_name.upper()} RESULTS {'='*20}")
-    print(f"{'Step':<5} | {'Page':<5} | {'Frames':<20} | {'Result':<10}")
-    print("-" * 55)
+    """
+    Formats and prints the simulation results.
+    Satisfies conditions: Number of pages, Frames, Reference string, 
+    Page interrupts, Success Rate, and Failure Rate.
+    """
+    total_requests = len(steps)
+    
+    print(f"\n{'='*25} {algo_name.upper()} RESULTS {'='*25}")
+    print(f"{'Step':<5} | {'Page':<5} | {'Frames':<25} | {'Result':<10}")
+    print("-" * 70)
     
     for idx, step in enumerate(steps):
-        # Convert frame list to a clean string like [7, 0, 1]
+        # Displays the "Page reference string/requested pages"
         frames_display = str(step['frames'])
-        print(f"{idx+1:<5} | {step['page']:<5} | {frames_display:<20} | {step['result']:<10}")
+        print(f"{idx+1:<5} | {step['page']:<5} | {frames_display:<25} | {step['result']:<10}")
     
-    print("-" * 55)
-    print(f"Total Hits:   {hits}")
-    print(f"Total Faults: {faults}")
+    print("-" * 70)
     
-    if len(steps) > 0:
-        hit_ratio = (hits / len(steps)) * 100
-        print(f"Hit Ratio:    {hit_ratio:.2f}%")
-    print("=" * 50)
+    # Satisfying the specific conditions for your output
+    print(f"Number of Pages (Total Requests): {total_requests}")
+    print(f"Page Interrupts (Total Faults):   {faults}")
+    print(f"Total Hits:                       {hits}")
+    
+    if total_requests > 0:
+        success_rate = (hits / total_requests) * 100
+        failure_rate = (faults / total_requests) * 100
+        
+        print(f"Success Rate (Hit Ratio):         {success_rate:.2f}%")
+        print(f"Failure Rate (Miss Ratio):        {failure_rate:.2f}%")
+    
+    print("=" * 60)
 
 def get_input():
     """Handles user input for pages and frames with error checking."""
